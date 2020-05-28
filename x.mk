@@ -34,3 +34,6 @@ e2e-local: bin/e2e-local.test bin/e2e-local.image.tar
 # determine staleness.
 .PHONY: FORCE
 FORCE:
+
+hello:
+	echo "int main"

@@ -3,6 +3,7 @@ package e2e
 import (
 	"context"
 	"flag"
+	"github.com/onsi/ginkgo/reporters"
 	"os"
 	"testing"
 	"time"
@@ -35,16 +36,29 @@ var (
 		"bitnami/nginx:latest",
 		"dummy image to treat as an operator in tests")
 
+	temp = flag.String(
+		"junit-dir",
+		"",
+		"set temp dir")
+
 	testNamespace           = ""
 	operatorNamespace       = ""
 	communityOperatorsImage = ""
+	junitDir = ""
 )
 
 func TestEndToEnd(t *testing.T) {
 	RegisterFailHandler(Fail)
 	SetDefaultEventuallyTimeout(1 * time.Minute)
 	SetDefaultEventuallyPollingInterval(1 * time.Second)
-	RunSpecs(t, "End-to-end")
+
+	//if junitDir := os.Getenv("JUNIT_DIRECTORY"); junitDir != "" {
+		junitReporter := reporters.NewJUnitReporter("junit_e2e.xml")
+		RunSpecsWithDefaultAndCustomReporters(t, "End-to-end", []Reporter{junitReporter})
+	//} else {
+	//	RunSpecs(t, "End-to-end")
+	//}
+
 }
 
 var deprovision func() = func() {}
