@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"github.com/onsi/ginkgo/reporters"
+	"log"
 	"os"
 	"testing"
 	"time"
@@ -44,7 +45,7 @@ var (
 	testNamespace           = ""
 	operatorNamespace       = ""
 	communityOperatorsImage = ""
-	junitDir = ""
+	junitDir                = ""
 )
 
 func TestEndToEnd(t *testing.T) {
@@ -52,13 +53,24 @@ func TestEndToEnd(t *testing.T) {
 	SetDefaultEventuallyTimeout(1 * time.Minute)
 	SetDefaultEventuallyPollingInterval(1 * time.Second)
 
+	createFile()
+
 	//if junitDir := os.Getenv("JUNIT_DIRECTORY"); junitDir != "" {
-		junitReporter := reporters.NewJUnitReporter("junit_e2e.xml")
-		RunSpecsWithDefaultAndCustomReporters(t, "End-to-end", []Reporter{junitReporter})
+	junitReporter := reporters.NewJUnitReporter("junit_e2e.xml")
+	RunSpecsWithDefaultAndCustomReporters(t, "End-to-end", []Reporter{junitReporter})
 	//} else {
 	//	RunSpecs(t, "End-to-end")
 	//}
 
+}
+
+func createFile(){
+	emptyFile, err := os.Create("empty.xml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(emptyFile)
+	emptyFile.Close()
 }
 
 var deprovision func() = func() {}

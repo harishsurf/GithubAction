@@ -36,4 +36,5 @@ e2e-local: bin/e2e-local.test bin/e2e-local.image.tar
 FORCE:
 
 hello:
-	echo "int main"
+	echo "Hello"
+	find . -name "*.xml"
