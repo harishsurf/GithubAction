@@ -53,18 +53,16 @@ func TestEndToEnd(t *testing.T) {
 	SetDefaultEventuallyTimeout(1 * time.Minute)
 	SetDefaultEventuallyPollingInterval(1 * time.Second)
 
-	createFile()
-
-	//if junitDir := os.Getenv("JUNIT_DIRECTORY"); junitDir != "" {
-	junitReporter := reporters.NewJUnitReporter("junit_e2e.xml")
-	RunSpecsWithDefaultAndCustomReporters(t, "End-to-end", []Reporter{junitReporter})
-	//} else {
-	//	RunSpecs(t, "End-to-end")
-	//}
+	if junitDir := os.Getenv("JUNIT_DIRECTORY"); junitDir != "" {
+		junitReporter := reporters.NewJUnitReporter("junit_e2e.xml")
+		RunSpecsWithDefaultAndCustomReporters(t, "End-to-end", []Reporter{junitReporter})
+	} else {
+		RunSpecs(t, "End-to-end")
+	}
 
 }
 
-func createFile(){
+func createFile() {
 	emptyFile, err := os.Create("empty.xml")
 	if err != nil {
 		log.Fatal(err)

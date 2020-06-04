@@ -11,8 +11,9 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
         - name: Run tests from the Makefile
+          env:
+            JUNIT_DIRECTORY: /artifacts
           shell: bash
           run: |
-            value=`find . -name *.xml`
-            echo The result is $value
+            make -f x.mk hello
 
